@@ -2100,6 +2100,38 @@ class PlacesViewController: ArticleLocationCollectionViewController, UISearchBar
         currentSearch = PlaceSearch(filter: .top, type: .location, origin: .user, sortStyle: .links, string: nil, region: region, localizedDescription: title, searchResult: searchResult, siteURL: articleURL.wmf_site)
     }
 
+    /// Shows the map at a specific coordinate from deep link
+    /// - Parameters:
+    ///   - latitude: Latitude of the location
+    ///   - longitude: Longitude of the location
+    ///   - animated: Whether to animate the transition
+    @objc public func showCoordinate(latitude: Double, longitude: Double, animated: Bool) {
+        guard view != nil else { // force view instantiation
+            return
+        }
+        
+        let coordinate = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
+        
+        // Create a region centered on the coordinate
+        let region = [coordinate].wmf_boundingRegion(with: 10000) // 10km radius
+        
+        // Create a PlaceSearch for this coordinate
+        let locationName = String(format: "%.4f, %.4f", latitude, longitude)
+        let search = PlaceSearch(
+            filter: .top,
+            type: .location,
+            origin: .user,
+            sortStyle: .links,
+            string: nil,
+            region: region,
+            localizedDescription: locationName,
+            searchResult: nil,
+            siteURL: siteURL
+        )
+        
+        currentSearch = search
+    }
+
     fileprivate func searchForFirstSearchSuggestion() {
         if !searchSuggestionController.searches[PlaceSearchSuggestionController.completionSection].isEmpty {
             currentSearch = searchSuggestionController.searches[PlaceSearchSuggestionController.completionSection][0]
