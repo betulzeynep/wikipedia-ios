@@ -42,6 +42,10 @@ extern NSString *const WMFNavigateToActivityNotification;
 
 - (nullable NSURL *)wmf_linkURL;
 
+// Coordinate helpers for Places activity
+- (nullable NSNumber *)wmf_placesLatitude;
+- (nullable NSNumber *)wmf_placesLongitude;
+
 - (NSURL *)wmf_contentURL;
 
 + (NSURL *)wmf_baseURLForActivityOfType:(WMFUserActivityType)type;
